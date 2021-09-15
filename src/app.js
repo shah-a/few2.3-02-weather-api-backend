@@ -20,7 +20,7 @@ app.get('/weather', async (req, res) => {
   const urlQuery = `?appid=${process.env.API_KEY}&zip=${code}&units=${units}`;
 
   let data = await fetch(urlBase + urlQuery);
-  data = data.json();
+  data = await data.json();
 
   return res.json(data);
 });

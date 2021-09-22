@@ -11,15 +11,14 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
+app.use(express.json());
 app.use(express.static(join(__dirname, '..', 'build')));
 
-app.get('/weather', async (req, res) => {
-  const { code, units } = req.query;
+app.post('/weather', async (req, res) => {
+  const { urlBase, urlQuery } = req.body;
+  const fetchUrl = urlBase + urlQuery + `&appid=${process.env.API_KEY}`;
 
-  const urlBase = 'https://api.openweathermap.org/data/2.5/weather';
-  const urlQuery = `?appid=${process.env.API_KEY}&zip=${code}&units=${units}`;
-
-  let data = await fetch(urlBase + urlQuery);
+  let data = await fetch(fetchUrl);
   data = await data.json();
 
   return res.json(data);

@@ -1,18 +1,14 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import express from 'express';
 import fetch from 'node-fetch';
+import cors from 'cors';
 
-dotenv.config()
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-app.use(express.static(join(__dirname, '..', 'build')));
+app.use(cors());
 
 app.post('/weather', async (req, res) => {
   const { urlBase, urlQuery } = req.body;

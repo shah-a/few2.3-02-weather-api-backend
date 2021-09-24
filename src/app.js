@@ -10,14 +10,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post('/weather', async (req, res) => {
+app.post('/weather', (req, res) => {
   const { urlBase, urlQuery } = req.body;
   const fetchUrl = urlBase + urlQuery + `&appid=${process.env.API_KEY}`;
-
-  let data = await fetch(fetchUrl);
-  data = await data.json();
-
-  return res.json(data);
+  fetch(fetchUrl)
+    .then((data) => data.json())
+    .then((data) => res.json(data))
+    .catch(() => res.sendStatus(500));
 });
 
 app.listen(process.env.PORT || 3000);
